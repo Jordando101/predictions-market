@@ -16,12 +16,15 @@ This project builds a local, human-in-the-loop multi-agent forecasting suite des
 - **LLM Integration:** LiteLLM or direct provider SDKs (OpenAI / Anthropic) with mandatory JSON schema enforcement (`response_format`).
 - **Database/State:** SQLite (`aiosqlite`) to persist markets, agent transcripts, research articles found, red-team critiques, and final probability scores.
 
-### Frontend / Dashboard (`/frontend` or single-file template)
-- **Framework:** Streamlit or a lightweight FastAPI + Tailwind/HTMX stack (Streamlit is preferred for rapid agent-loop visualization).
+### Frontend (`/frontend`)
+- **Framework:** React + TypeScript (Vite)
+- **Styling:** Tailwind CSS
+- **State Management:** TanStack Query for server state, Zustand for local UI state
 - **Key Views:**
-  1. **Market Monitor:** Active markets, current market price vs. AI estimated probability, and calculated edge percentage.
-  2. **Agent Audit Log:** Step-by-step breakdown of what the Research Agent found (with source links/articles), Red-Team critiques, and the Forecasting Judge's calibration logic.
-  3. **Manual Trade Checklist:** Clear "BUY YES" / "BUY NO" recommendations with confidence scores and reasoning summaries to copy/paste or execute manually on Kalshi.
+  1. **Market Browser:** Markets organized by category (Politics, Sports, Economics, etc.) with market price vs. AI probability and edge % at a glance.
+  2. **Pipeline Manager:** Trigger and monitor agent pipelines per market; see live status of each agent (Research → Red-Team → Judge).
+  3. **Agent Audit Detail:** Step-by-step breakdown of Research findings (with source links), Red-Team critiques, and the Forecasting Judge's calibration logic.
+  4. **Action Queue:** "BUY YES" / "BUY NO" recommendations with confidence scores and reasoning summaries to review and act on manually.
 
 ---
 
@@ -39,7 +42,7 @@ This project builds a local, human-in-the-loop multi-agent forecasting suite des
 
 - [ ] **Milestone 1:** Setup Python asynchronous project structure, SQLite schema for state persistence, and Pydantic models.
 - [ ] **Milestone 2:** Implement mock/live connectors for Research Agent (Perplexity/Tavily search API integration) and core agent chain.
-- [ ] **Milestone 3:** Build Streamlit dashboard UI displaying market lists, edge metrics, and detailed agent audit cards.
+- [ ] **Milestone 3:** Build React/TypeScript dashboard UI displaying market lists, edge metrics, pipeline status, and detailed agent audit cards.
 - [ ] **Milestone 4:** Run manual end-to-end tests on 3 live prediction market contracts and audit probability calibration over time.
 
 ---
@@ -47,5 +50,7 @@ This project builds a local, human-in-the-loop multi-agent forecasting suite des
 ## Coding Guidelines for Claude
 - Always use asynchronous Python (`async def`/`await`) for agent processing pipelines.
 - Enforce Pydantic validation on all LLM outputs to prevent downstream parsing failures.
-- Keep UI components clean, modular, and focused on transparent, readable rationales for human decision-making.
+- Keep React components clean, modular, and focused on transparent, readable rationales for human decision-making.
+- Use TypeScript strictly — no `any` types.
+- Co-locate component files with their types; avoid barrel re-exports unless the module is truly public-facing.
 - When generating code, keep files concise and strictly adhere to the single-file/modular boundaries specified.
